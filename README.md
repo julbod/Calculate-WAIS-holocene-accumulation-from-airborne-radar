@@ -1,5 +1,4 @@
 # Calculate-WAIS-holocene-accumulation-from-airborne-radar
-This project contains the codes used to calculate holocene accumulation from airborne radar layers over the West Antarctic Ice Sheet
 
 This folder contains a series of MATLAB codes used in Bodart et al. (xxx) to calculate holocene accumulation from airborne radar layers over the West Antarctic Ice Sheet.
 
