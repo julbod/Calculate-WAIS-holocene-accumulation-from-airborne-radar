@@ -6,4 +6,4 @@ Details on the accumulation 1-D modelling methods can be found at: Fahnestock et
 
 Note: Some of the codes archived here are modified versions of codes initially compiled by Joe MacGregor (NASA) and Mark Fahnestock (UAF) and which are available at the GitHub page of Joe MacGregor (https://github.com/joemacgregor/layer_analysis). Particularly, the 'nye_fit' function used to calculate Nye accumulation is taken from repo: https://github.com/joemacgregor/layer_analysis/blob/master/strain/nye_fit.m
 
-The output from these codes were used to produce the analysis found in the paper. To cite the code + data output, refer to the associated manuscript: Bodart et al. (xxx).
+The output from the codes archived on this repo were used to produce the analysis found in the Bodart et al. (xxx) paper. To cite the code + data output, refer to the associated manuscript: Bodart et al. (xxx).
