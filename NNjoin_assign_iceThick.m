@@ -28,19 +28,23 @@ clear all
 addpath (genpath('D:\R_University_Edinburgh\Toolbox'));
 
 %% import IRH
-layer=['D:\R_University_Edinburgh\WAIS_accumulation\IRHs\Muldoon_IRHs\LM9_EPSG3031.csv']; % Muldoon
+%layer=['D:\R_University_Edinburgh\WAIS_accumulation\IRHs\Muldoon_IRHs\LM9_EPSG3031.csv']; % Muldoon
+layer=['D:\R_University_Edinburgh\WAIS_accumulation\IRHs\Ashmore_IRHs\H2_Results_v2.csv']; % Ashmore
 fid=fopen(layer);
-layer=textscan(fid,'%f %f %f %f %f','delimiter',',','headerLines',1); %Muldoon
+%layer=textscan(fid,'%f %f %f %f %f','delimiter',',','headerLines',1); %Muldoon
+layer=textscan(fid,'%f %f %f','delimiter',',','headerLines',1); % Ashmore
 fclose(fid);
 
-layer_x =(layer{1,2});
-layer_y =(layer{1,3});
-layer_depth =(layer{1,4});
+layer_x =(layer{1,1});
+layer_y =(layer{1,2});
+layer_depth =(layer{1,3});
 
 %% import ice thickness vector
-thick=['D:\University_Texas\UTIG_YYYY_AGASEA-BAS_AIR_BM2.csv'];
+%thick=['D:\University_Texas\UTIG_YYYY_AGASEA-BAS_AIR_BM2.csv']; % Muldoon
+thick=['D:\British_Antarctic_Survey\data\IMAFI\text_files\IMAFI_merged_psxy.txt']; % Ashmore
 fid=fopen(thick);
-thick=textscan(fid,'%f %f %f %f %f %f %f %f %f %f %f %f %s %s %s %s %f','delimiter',',','headerLines', 1); % Muldoon
+%thick=textscan(fid,'%f %f %f %f %f %f %f %f %f %f %f %f %s %s %s %s %f','delimiter',',','headerLines', 1); % Muldoon
+thick=textscan(fid,'%f %f %f %f %f %f','delimiter',',','headerLines', 1); % Ashmore
 fclose(fid);
 
 thick_lon =(thick{1,1});
@@ -55,6 +59,7 @@ clear thick layer
 %% assign ice thickness values to closest point in IRHs
 layer_xy = horzcat(layer_x,layer_y);
 thick_xy = horzcat(thick_x,thick_y);
+disp('Assigning radar ice thickness to nearest layer point...')
 
 %f = waitbar(0,'Starting...');
 for i = 1:length(layer_xy)
@@ -88,7 +93,13 @@ for i = 1:length(layer_xy)
     
 end
 
-thick_radar = thick;
+% place output into new array
+layer_iceThick = thick;
+
+%% write data
+table = table(layer_xy(:,1),layer_xy(:,2),layer_depth, layer_iceThick.', distance.', 'VariableNames', { 'x', 'y','lyr_depth','iceThick','distance'} );
+writetable(table, 'D:\R_University_Edinburgh\WAIS_accumulation\IRHs\Ashmore_IRHs\H2_iceThick_temp.txt')
+clear table
 
 %% read BedMachine tif file data
 tif = 'D:\University_Edinburgh\QGIS_Linux\Chapt_3_accumulation\clipped_rasters\BedMachine_thick_clipped_450m.tif';
@@ -111,13 +122,15 @@ y_coords = (y_min + (tif_inc / 2)) + (0:tif_inc:((num_y - 1) * tif_inc))';
 grd_thick = geotiffread(tif);
 
 % flip array in up/down direction
-BedMac_thick = flipud(grd_thick);
+grd_thick = flipud(grd_thick);
 
 % conver to vector
 grid_data = [x_grd(:) y_grd(:) grd_thick(:)];
 
 %%
 %% Assign BedMachine data points to all -9999 values
+disp('Filling gaps in radar ice thickness with BedMachine grid...')
+
 for i = 1 :length(thick)
     if thick (i) == -9999
         
@@ -141,7 +154,8 @@ for i = 1 :length(thick)
 end
 
 %% export data to csv
-table = table(layer_xy(:,1),layer_xy(:,2),layer_depth, thick, distance.', 'VariableNames', { 'x', 'y','lyr_depth','iceThick','distance'} );
-writetable(table, 'D:\R_University_Edinburgh\WAIS_accumulation\IRHs\Muldoon_IRHs\LM9_iceThick_final.txt')
+table = table(layer_xy(:,1),layer_xy(:,2),layer_depth, thick.', distance.', 'VariableNames', { 'x', 'y','lyr_depth','iceThick','distance'} );
+%writetable(table, 'D:\R_University_Edinburgh\WAIS_accumulation\IRHs\Muldoon_IRHs\LM9_iceThick_final.txt')
+writetable(table, 'D:\R_University_Edinburgh\WAIS_accumulation\IRHs\Ashmore_IRHs\H2_iceThick_final.txt')
 
 %%
