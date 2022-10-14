@@ -1,3 +1,11 @@
+# Explanation <br />
+This file contains the results presented in Figures 2-5 and S1-2 of Bodart et al. (2023; currently in review in The Cryosphere).<br />
+The files in this folder are all tif files exported in Antarctic Polar Stereographic (WGS84 EPSG: 3031), except for a csv file which contains the value for the 79 point measurements shown in the paper. <br />
+
+The data in this folder should be considered at risk as the paper is in review and the files may change. The finalised files will be made available upon acceptance.<br />
+
+Any questions should be directed to julien.bodart@ed.ac.uk. <br />
+
 # Folder arranged as follows:<br />
 ## depth<br />
 ----> 4700_depth_grid (m; Fig. 2a)<br />
